@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Lost Network</title>
+<meta name="description" content="SPARDHA 2K26 — The Uncharted · Round 3: The Lost Network">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div id="bootErr" style="display:none;position:fixed;inset:0;z-index:9999;background:#07140e;color:#ffdf8a;padding:24px;font:16px/1.5 system-ui,sans-serif;overflow:auto"></div>
+<script>
+/* shows any start-up error on screen instead of a blank page */
+(function(){var n=0;function show(m){var b=document.getElementById("bootErr");if(!b)return;b.style.display="block";b.innerHTML="<h2>The game could not start</h2><p>Please screenshot this and send it to the organiser.</p><pre style=\"white-space:pre-wrap;color:#fff\">"+String(m).replace(/</g,"&lt;")+"</pre>";}
+addEventListener("error",function(e){var t=e.target;if(t&&t!==window&&t.tagName){if(t.tagName==="SCRIPT")show("Could not load file: "+t.src);}else{show((e.message||"Error")+" ("+(e.filename||"").split("/").pop()+":"+e.lineno+")");}},true);
+addEventListener("unhandledrejection",function(e){if(++n<2)console.warn(e.reason);});})();
+</script>
+<div id="stage">
+  <svg id="world" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+  <div class="fog f1"></div><div class="fog f2"></div>
+  <div class="vignette"></div>
+</div>
+
+<header id="hud">
+  <div class="brand"><b>SPARDHA 2K26</b><span>The Lost Network</span></div>
+  <div class="dots" id="dots" aria-label="Progress"></div>
+  <div class="tools">
+    <div id="timerBox" class="timerbox" role="timer" aria-label="Time remaining"><span class="tlabel">Time left</span><span id="timer" class="timer">30:00</span></div>
+    <button id="fs" class="icon" title="Full screen" aria-label="Toggle full screen">⛶</button>
+    <button id="mute" class="icon" title="Sound on/off" aria-label="Toggle sound">♪</button>
+    <button id="restart" class="icon" title="Restart demo" aria-label="Restart demo">↺</button>
+  </div>
+</header>
+
+<div id="travelChip" class="chip hide"></div>
+<div id="fsLock" class="fslock hide" role="alertdialog" aria-live="assertive" aria-label="Full screen required" tabindex="-1">
+  <div class="fslock-card">
+    <p class="kick">SPARDHA 2K26 · THE LOST NETWORK</p>
+    <h2>Full screen is required</h2>
+    <p>The round must stay in full screen until you finish or the time is over. Your timer is still running.</p>
+    <button type="button" class="primary wide" id="fsLockBtn">Click anywhere to return to full screen</button>
+    <p class="fslock-time">Time left <b id="fsLockTime">--:--</b></p>
+  </div>
+</div>
+<div id="toast" class="chip toast hide"></div>
+
+<main id="panel" class="panel hide" aria-live="polite"></main>
+
+<section id="intro" class="overlay">
+  <div class="card intro">
+    <p class="kick">SPARDHA 2K26 · THE UNCHARTED</p>
+    <h1>The Lost Network</h1>
+    <p class="sub">Round 3</p>
+    <p class="lore">Ten places lie hidden in the forest. At each one, your grid-side partner finds a clue. Enter it here, answer the question, and the forest will show you which way to move on the grid next. You have 30 minutes. Reach the Signal Tower and send the last signal.</p>
+    <form id="startForm" autocomplete="off">
+      <label for="team">Team name</label>
+      <input id="team" type="text" maxlength="32" placeholder="Enter your team name" required>
+      <button class="primary" id="beginBtn" type="submit">Begin the journey</button>
+      <button class="ghost hide" id="resumeBtn" type="button">Resume where you left</button>
+    </form>
+  </div>
+</section>
+
+<section id="finale" class="overlay hide">
+  <div class="card intro finale">
+    <div class="beam"></div>
+    <p class="kick">SIGNAL TRANSMITTED</p>
+    <h1>You reached the tower</h1>
+    <p class="lore" id="finaleText"></p>
+    <div class="stats"><div><span>Team</span><b id="fTeam">-</b></div><div><span>Time</span><b id="fTime">-</b></div><div><span>Stations</span><b id="fStations">10 / 10</b></div></div>
+    <p class="muted">Show this screen to the event coordinator.</p>
+  </div>
+</section>
+
+<section id="expired" class="overlay hide">
+  <div class="card intro finale expired">
+    <p class="kick">TIME EXPIRED</p>
+    <h1>The signal faded</h1>
+    <p class="lore">The 30 minutes are over. No more answers can be accepted.</p>
+    <div class="stats"><div><span>Team</span><b id="xTeam">-</b></div><div><span>Time</span><b id="xTime">30:00</b></div><div><span>Stations</span><b id="xStages">0 / 10</b></div></div>
+    <button class="primary wide" id="xRestart" type="button">Restart demo</button>
+  </div>
+</section>
+
+<div id="adminView" class="hide"><div id="adminRoot"></div></div>
+
+<script src="config.js"></script>
+<script src="results.js"></script>
+<script src="stations.js"></script>
+<script src="questions.js"></script>
+<script src="route.js"></script>
+<script src="core.js"></script>
+<script src="app.js"></script>
+<script src="admin.js"></script>
+<script>
+/* admin: open index.html#admin (not linked anywhere in the game) */
+(function(){function chk(){var on=location.hash==="#admin";var v=document.getElementById("adminView");v.classList.toggle("hide",!on);if(on&&window.AdminDash)window.AdminDash.start();}
+addEventListener("hashchange",chk);chk();})();
+</script>
+</body>
+</html>
